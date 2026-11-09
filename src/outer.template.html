@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MAX Explore Settings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme:light;
+    --navy:#211e60; --accent:#4146e0; --accent-d:#3338c4; --bg:#f4f5fb; --surface:#fff; --line:#dcdfee;
+    --ink:#211e60; --ink-2:#4a4a68; --ink-3:#6b6b8a; --soft:#eceefa; --soft-line:#cfd3ea; --stage:#e4e6f2;
+    --good:#2fbf71; --good-ink:#1d5a31; --shadow:0 10px 30px rgba(33,30,96,.18);
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  button{font:inherit;color:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .app{height:100%;height:100dvh;display:flex;flex-direction:column}
+
+  /* header with the progress count */
+  .top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 24px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+  .brand b{font-size:16px;font-weight:700;color:var(--navy);white-space:nowrap}
+  .brand span{font-size:13px;color:var(--ink-3);white-space:nowrap}
+  .prog{display:flex;align-items:center;gap:12px;flex:none}
+  .prog-text{font-size:13px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+  .prog-text.all{color:var(--good-ink)}
+  .bar{width:180px;height:8px;border-radius:8px;background:var(--soft);overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--good);border-radius:8px;transition:width .35s ease}
+
+  .main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 390px}
+  .stage{min-height:0;background:var(--stage);overflow:auto;padding:16px}
+  .shot{position:relative;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 6px 20px rgba(33,30,96,.10)}
+  .page{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;background:#fff}
+  .page iframe{position:absolute;left:-50px;top:0;width:1920px;border:0;display:block;background:#fff}
+
+  /* guide */
+  .guide{position:relative;min-height:0;display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--line)}
+  .guide-body{flex:1;min-height:0;overflow:auto;padding:24px 26px 12px}
+  h1{font-size:26px;line-height:1.2;font-weight:700;color:var(--ink);margin-bottom:10px}
+  h2.k{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+  .lede{font-size:15px;line-height:1.6;font-weight:500;color:var(--ink-2);margin-bottom:16px}
+  .sub{font-size:13px;color:var(--ink-3);margin:-4px 0 12px}
+  .meta{font-size:13px;color:var(--ink-3);margin:-6px 0 18px}
+  .done{display:flex;align-items:center;gap:10px;background:#e8f4ea;color:var(--good-ink);border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;margin-bottom:16px}
+  .tick{flex:none;width:18px;height:18px;border-radius:50%;background:var(--good) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/11px 11px no-repeat}
+  .crumb{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .crumb .pos{font-size:12px;color:var(--ink-3);white-space:nowrap}
+  .who{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+  .who svg{flex:none;margin-top:2px}
+  .who b{display:block;font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:2px}
+  .who span{font-size:14px;line-height:1.5;color:var(--ink-2)}
+  details.kp{border:1px solid var(--line);border-radius:12px;margin-bottom:18px;background:var(--surface)}
+  details.kp summary{cursor:pointer;list-style:none;padding:11px 14px;font-size:14px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center}
+  details.kp summary::-webkit-details-marker{display:none}
+  details.kp summary::after{content:"+";font-size:18px;color:var(--ink-3);line-height:1}
+  details.kp[open] summary::after{content:"\2212"}
+  details.kp ul{padding:0 14px 12px 32px;font-size:14px;line-height:1.55;color:var(--ink-2)}
+  details.kp li{margin-bottom:6px}
+  .grp{margin-bottom:18px}
+  .grp .gb{font-size:13px;color:var(--ink-3);margin:2px 0 8px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--soft-line);background:var(--surface);color:var(--ink-2);padding:8px 14px;border-radius:20px;font-size:13px;font-weight:500;transition:background .15s,border-color .15s}
+  .chip:hover{background:var(--soft)}
+  .chip.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip.seen::before{content:"";display:inline-block;width:15px;height:15px;margin-right:7px;border-radius:50%;vertical-align:-3px;background:var(--good) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/9px 9px no-repeat}
+
+  .nav{flex:none;display:flex;align-items:center;gap:10px;padding:14px 22px;border-top:1px solid var(--line);background:var(--surface)}
+  .btn{white-space:nowrap;background:transparent;border:1px solid var(--soft-line);color:var(--ink-2);padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;transition:background .15s}
+  .btn:hover:not(:disabled){background:var(--soft)}
+  .btn:disabled{opacity:.35;cursor:default}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover:not(:disabled){background:var(--accent-d)}
+  .nav .grow{flex:1}
+  .nav .btn.link{border-color:transparent;color:var(--accent)}
+  .toast{position:absolute;left:20px;right:20px;bottom:78px;background:var(--navy);color:#fff;font-size:14px;line-height:1.4;padding:11px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none}
+  .toast.on{opacity:1;transform:none}
+
+  @media (max-width:1200px){.main{grid-template-columns:minmax(0,1fr) 350px}.guide-body{padding:20px 20px 10px}h1{font-size:23px}.nav{padding:12px 14px;gap:6px}.btn{padding:9px 12px;font-size:13px}}
+  @media (max-width:900px){
+    .main{grid-template-columns:1fr;grid-template-rows:minmax(0,42%) minmax(0,58%)}
+    .guide{border-left:0;border-top:1px solid var(--line)}
+    .stage{padding:10px}.top{padding:8px 16px}.bar{width:90px}.brand span{display:none}
+    .guide-body{padding:16px 18px 8px}.nav{padding:10px 16px}
+  }
+  @media (max-width:900px) and (orientation:landscape) and (max-height:560px){
+    .main{grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:none}
+    .guide{border-left:1px solid var(--line);border-top:0}
+    h1{font-size:20px}
+  }
+  @media (max-width:480px){.btn{padding:10px 12px;font-size:13px}.prog-text{font-size:12px}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><b>Explore Settings</b><span>MAX</span></div>
+    <div class="prog" role="status" aria-live="polite"><span class="prog-text" id="ptext"></span><div class="bar" aria-hidden="true"><i id="pfill"></i></div></div>
+  </header>
+  <div class="main">
+    <div class="stage" id="stage">
+      <div class="shot" id="shot"><div class="page" id="page"><iframe id="sf" title="The MAX Settings page. Select a page in the list on the left to open it."></iframe></div></div>
+    </div>
+    <section class="guide" aria-live="polite">
+      <div class="guide-body" id="guide"></div>
+      <div class="toast" id="toast" role="status"></div>
+      <div class="nav" id="nav"></div>
+    </section>
+  </div>
+</div>
+<script>
+const EX = __EX_JSON__;
+const STAGE = __STAGE_JSON__;
+const N = EX.length;
+const W = 1870;                      // width of the product area, in layout pixels (the 50 px side rail is cropped)
+const GROUPS = [
+  {name:'General', blurb:'Venue-wide setup, people, calendar, and usage.', pages:[0,1,2,3]},
+  {name:'Revenue Goals', blurb:'The targets MAX measures your pipeline against.', pages:[4,5]},
+  {name:'Sales Tools', blurb:'Pricing and proposals for your team.', pages:[6,7]},
+  {name:'Insights & Automation', blurb:'How MAX scores, recommends, reminds, and writes.', pages:[8,9,10,11]},
+  {name:'Data & Sync', blurb:'Connect MAX to your source system and your email.', pages:[12,13,14,15,16]},
+  {name:'My Account', blurb:'Your own details and preferences.', pages:[17,18]},
+  {name:'Support', blurb:'Usage details for Company Background.', pages:[19]},
+  {name:'Space Planning / Holds', blurb:'Which bookings hold a space.', pages:[20]}
+];
+const GROUP_OF = {}; GROUPS.forEach((g,gi)=>g.pages.forEach(p=>GROUP_OF[p]=gi));
+
+const stage = document.getElementById('stage'), shot = document.getElementById('shot'), page = document.getElementById('page'),
+      sf = document.getElementById('sf'), guide = document.getElementById('guide'), nav = document.getElementById('nav'),
+      toast = document.getElementById('toast'), ptext = document.getElementById('ptext'), pfill = document.getElementById('pfill');
+
+let cur = -1;                         // -1 = the index of all pages, otherwise the page being shown
+const viewed = {0:1};                 // General is open when you arrive
+const vcount = () => Object.keys(viewed).length;
+const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* ---------- the live product page ---------- */
+let pdoc = null, toastTimer = null;
+const navBtns = () => pdoc ? [...pdoc.querySelectorAll('.settings-nav__sub-item')] : [];
+function markSeen(){ navBtns().forEach((b,i)=>b.classList.toggle('wt-seen', !!viewed[i])); }
+function swapPage(i){
+  if(!pdoc) return;
+  const old = pdoc.querySelector('section.settings-shell__content'); if(!old) return;
+  const tmp = pdoc.createElement('div'); tmp.innerHTML = sf.contentWindow.PAGES[i]; old.replaceWith(tmp.firstElementChild);
+  navBtns().forEach((b,j)=>{
+    const on = j===i; b.classList.toggle('settings-nav__sub-item--active', on);
+    if(on){ b.setAttribute('aria-current','page'); b.classList.remove('wt-pulse'); void b.offsetWidth; b.classList.add('wt-pulse'); } else b.removeAttribute('aria-current');
+  });
+  const side = pdoc.querySelector('.settings-shell__sidebar'), b = navBtns()[i];     // keep the chosen item in view
+  if(side && b){ const sr=side.getBoundingClientRect(), r=b.getBoundingClientRect(); if(r.top<sr.top+4) side.scrollTop-=(sr.top+4-r.top); else if(r.bottom>sr.bottom-4) side.scrollTop+=(r.bottom-sr.bottom+8); }
+}
+function say(t){ toast.textContent=t; toast.classList.add('on'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('on'),2400); }
+function selectPage(i){
+  if(i<0||i>=N) return;
+  cur=i; viewed[i]=1; swapPage(i); markSeen(); render();
+  stage.scrollTo({left:0});
+}
+function toIndex(){ cur=-1; render(); }
+function step(d){ const n=cur+d; if(n>=0&&n<N) selectPage(n); }
+
+function onReady(){
+  try{ pdoc = sf.contentDocument.getElementById('max-frame').contentDocument; }catch(e){ return; }
+  const CHK = "url(\"data:image/svg+xml;utf8,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>")+"\")";
+  const st = pdoc.createElement('style');
+  st.textContent = ".settings-nav__sub-item{position:relative;padding-right:34px!important}"
+   + ".settings-nav__sub-item.wt-seen::after{content:'';position:absolute;right:9px;top:50%;width:17px;height:17px;margin-top:-8.5px;border-radius:50%;background:#2fbf71 "+CHK+" center/10px 10px no-repeat}"
+   + "@keyframes wtp{0%{box-shadow:0 0 0 0 rgba(65,70,224,.55)}100%{box-shadow:0 0 0 10px rgba(65,70,224,0)}}"
+   + ".settings-nav__sub-item.wt-pulse{animation:wtp .9s ease-out}@media (prefers-reduced-motion:reduce){.settings-nav__sub-item.wt-pulse{animation:none}}";
+  pdoc.head.appendChild(st);
+  pdoc.addEventListener('click', e=>{
+    e.preventDefault(); e.stopPropagation();
+    const b = e.target.closest && e.target.closest('.settings-nav__sub-item');
+    if(b) selectPage(navBtns().indexOf(b)); else say('Select a page in the Settings list on the left.');
+  }, true);
+  ['auxclick','contextmenu','submit','dblclick'].forEach(t=>pdoc.addEventListener(t,e=>e.preventDefault(),true));
+  pdoc.addEventListener('mousedown', e=>{ if(!(e.target.closest && e.target.closest('.settings-nav__sub-item'))) e.preventDefault(); }, true);
+  pdoc.addEventListener('keydown', e=>{ const t=e.target; if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')) e.preventDefault(); onKey(e); }, true);
+  sf.contentDocument.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); say('Select a page in the Settings list on the left.'); }, true);
+  markSeen(); swapPage(0); fit();
+}
+window.addEventListener('message', e=>{ if(e.data && e.data.maxReady) onReady(); });
+
+/* ---------- layout: the product fills the whole left side ---------- */
+function fit(){
+  const cs = getComputedStyle(stage);
+  const iw = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const ih = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  if(iw<=0||ih<=0) return;
+  let s = Math.min(1, iw/W);
+  if(iw < 700) s = Math.max(s, 0.45);                  // small screens: stay readable and scroll sideways
+  const h = Math.round(ih/s);
+  shot.style.width = Math.round(W*s)+'px'; shot.style.height = ih+'px';
+  page.style.width = W+'px'; page.style.height = h+'px'; page.style.transform = 'scale('+s+')';
+  sf.style.height = h+'px';
+  try{ const hs = sf.contentDocument.getElementById('hstyle');
+    if(hs) hs.textContent = 'html,body{height:'+h+'px!important}#screen-host{height:'+h+'px!important}#max-frame{height:'+(h-40)+'px!important}'; }catch(e){}
+}
+
+/* ---------- the guide ---------- */
+const ICON_WHO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.9-8 9-4.8-1.1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>';
+const chip = p => `<button class="chip${viewed[p]?' seen':''}${p===cur?' cur':''}" data-p="${p}"${p===cur?' aria-current="true"':''}>${esc(EX[p].n)}</button>`;
+function render(){
+  const all = vcount()===N;
+  ptext.textContent = all ? `All ${N} pages viewed` : `${vcount()} of ${N} pages viewed`;
+  ptext.classList.toggle('all', all);
+  pfill.style.width = (vcount()/N*100)+'%';
+  let h = '', n = '';
+  if(all) h += `<div class="done"><span class="tick"></span>You have viewed every Settings page.</div>`;
+  if(cur<0){
+    h += `<h1>Explore Settings</h1><p class="lede">See what each Settings page does in MAX. Select a page in the list on the left, or choose one below.</p>
+          <p class="meta">${N} pages in ${GROUPS.length} groups. Some pages are for admins only.</p>`;
+    GROUPS.forEach(g=>{ h += `<section class="grp"><h2 class="k">${esc(g.name)}</h2><p class="gb">${esc(g.blurb)}</p><div class="chips">${g.pages.map(chip).join('')}</div></section>`; });
+    n = `<span class="grow"></span><button class="btn primary" id="go-start">${vcount()>1?'Continue the tour':'Start the tour'}</button>`;
+  } else {
+    const e = EX[cur], g = GROUPS[GROUP_OF[cur]];
+    h += `<div class="crumb"><h2 class="k">${esc(g.name)}</h2><span class="pos">Page ${cur+1} of ${N}</span></div><h1>${esc(e.n)}</h1>`;
+    if(e.t && e.t!==e.n) h += `<p class="sub">Screen title: ${esc(e.t)}</p>`;
+    h += `<p class="lede">${esc(e.d)}</p>`;
+    if(e.r) h += `<div class="who">${ICON_WHO}<div><b>Who can see it</b><span>${esc(e.r)}</span></div></div>`;
+    if(e.b && e.b.length) h += `<details class="kp"><summary>Key points</summary><ul>${e.b.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></details>`;
+    if(g.pages.length>1) h += `<h2 class="k" style="margin-bottom:8px">More in ${esc(g.name)}</h2><div class="chips">${g.pages.map(chip).join('')}</div>`;
+    n = `<button class="btn" id="go-prev"${cur===0?' disabled':''}>Previous</button><button class="btn link" id="go-all">All pages</button><span class="grow"></span><button class="btn primary" id="go-next"${cur===N-1?' disabled':''}>Next page</button>`;
+  }
+  guide.innerHTML = h; guide.scrollTop = 0; nav.innerHTML = n;
+  guide.querySelectorAll('.chip').forEach(c=>c.onclick=()=>selectPage(+c.dataset.p));
+  const q = id => document.getElementById(id);
+  if(q('go-start')) q('go-start').onclick = ()=>selectPage(vcount()>1 ? Math.min(...Array.from({length:N},(_,i)=>i).filter(i=>!viewed[i]).concat([0])) : 0);
+  if(q('go-prev')) q('go-prev').onclick = ()=>step(-1);
+  if(q('go-next')) q('go-next').onclick = ()=>step(1);
+  if(q('go-all')) q('go-all').onclick = toIndex;
+}
+function onKey(e){
+  if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName||'')) return;
+  if(e.key==='ArrowRight' || e.key==='ArrowDown'){ if(cur<0) selectPage(0); else step(1); e.preventDefault(); }
+  else if(e.key==='ArrowLeft' || e.key==='ArrowUp'){ if(cur>0) step(-1); e.preventDefault(); }
+}
+document.addEventListener('keydown', onKey);
+new ResizeObserver(()=>fit()).observe(stage);
+render(); fit();
+sf.srcdoc = STAGE;
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "file": "stage.html",
+  "sha256": "cbdf1e3420a3325ac5c40a09f67498eca1e0d491c1a58c933a41f647e73849e6",
+  "product": "MAX (MomentusMAX) in Momentus Enterprise",
+  "screen": "Settings (all 21 settings pages, General open first)",
+  "source": "Product shell, settings page list, and the HTML of every settings page taken from MAX___Explore_Settings__Interaction_.html (supplied by the content owner); the interaction layer was removed",
+  "modifications": "Interaction layer removed; product frame made taller (1440 px) so the whole list shows; mouse clicks let through to the product frame; page swapping and checkmarks added by the walkthrough script. The product UI itself is not edited.",
+  "formal_snapshot": false,
+  "approved_by": "Lauren Rouly-White (supplied the file for this purpose)"
+}

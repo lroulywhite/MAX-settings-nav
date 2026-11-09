@@ -1,0 +1,231 @@
+[
+ {
+  "n": "General",
+  "t": "",
+  "d": "Venue-wide preferences, plus a few settings that change how MomentusMAX behaves.",
+  "b": [
+   "Currency, regional format, date format, fiscal year start month, and time zone.",
+   "Opportunity Inactivity sets how many days without activity before MomentusMAX creates a follow-up task.",
+   "The fiscal year start month is permanent once it is saved."
+  ],
+  "r": "Admins can change it. Sales managers and reps can open it but cannot change anything."
+ },
+ {
+  "n": "Users & Access",
+  "t": "",
+  "d": "Add users, assign or change a role, and remove access.",
+  "b": [
+   "The three roles are Sales Rep, Sales Manager, and Admin.",
+   "Changes take effect on the user's next login.",
+   "MomentusMAX always keeps at least one Admin."
+  ],
+  "r": "Admins only."
+ },
+ {
+  "n": "Calendar Settings",
+  "t": "",
+  "d": "How the interactive calendar opens and behaves for everyone in your organization.",
+  "b": [
+   "Defaults set the opening view, the first day of the week, and the working-hour window.",
+   "Venue closures stop anyone from placing holds on those dates.",
+   "Changes apply the next time someone loads a calendar."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Usage",
+  "t": "",
+  "d": "Shows the MomentusMAX credits your account has used, by day and by kind of work.",
+  "b": [
+   "It is for visibility only. No usage limits are enforced yet.",
+   "Choose a period, such as This month or Last 3 months, to change the view.",
+   "Credits are grouped into categories, such as communication and space planning."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Goals",
+  "t": "",
+  "d": "Your venue's revenue targets. MomentusMAX measures pipeline and bookings against these.",
+  "b": [
+   "Three tabs: Prior Years, This Year, and Future Years.",
+   "Set the target at the annual, quarterly, or monthly level.",
+   "Your first saved goal is the baseline. Use Re-forecast to change it later."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Individual Targets",
+  "t": "",
+  "d": "Each representative's share of the venue target, at annual, quarterly, and monthly level.",
+  "b": [
+   "A summary card compares the venue total with what you have assigned.",
+   "Assign Target puts the table into edit mode.",
+   "Over-assigning and under-assigning are both allowed."
+  ],
+  "r": "Hidden from sales reps. Admins and sales managers can see it."
+ },
+ {
+  "n": "Price List",
+  "t": "",
+  "d": "Controls which price list MomentusMAX suggests first. It does not restrict what a rep can choose.",
+  "b": [
+   "Drag lists to reorder them. The top list in each section is suggested first.",
+   "Three scopes: Holds, Packages & Services, and Everywhere as the fallback.",
+   "A list marked Unavailable was removed or deactivated in your source system."
+  ],
+  "r": "Admins can edit. Sales managers can view only. Reps cannot see it."
+ },
+ {
+  "n": "Proposal Templates",
+  "t": "",
+  "d": "Set the default look for proposals and manage your library of uploaded templates.",
+  "b": [
+   "Defaults cover the logo, its placement, the primary color, and the cover page style.",
+   "Upload a PDF to turn it into a template, then map its fields to opportunity data.",
+   "Only Published templates can be chosen when a rep builds a proposal."
+  ],
+  "r": "Admins only."
+ },
+ {
+  "n": "Opportunity Scoring",
+  "t": "",
+  "d": "Defines how MomentusMAX scores every opportunity on value, win probability, and urgency.",
+  "b": [
+   "Four tabs: Score Display, Value, Probability, and Urgency.",
+   "Score Display sets the red, yellow, and green bands, and how the three scores combine.",
+   "Every setting starts with a default, so scoring works from day one."
+  ],
+  "r": "Hidden from sales reps. Sales managers can view it. Admins can edit."
+ },
+ {
+  "n": "Recommendation Score",
+  "t": "Space Plans Recommendation Score",
+  "d": "Configure how past events are matched to new inquiries to get space plan recommendations.",
+  "b": [
+   "Eligible Events controls how much of your event history can be used.",
+   "Scoring Factors set how much each factor counts and how different a past event can be.",
+   "Live Preview tests a sample inquiry against your history."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Communication Timeline",
+  "t": "",
+  "d": "Sets the day thresholds behind reply badges and the automatic follow-up tasks that go with them.",
+  "b": [
+   "Warning threshold: how long an unanswered outbound message waits before an amber badge.",
+   "Critical threshold: when the badge turns red. It must be greater than the warning threshold.",
+   "Customer awaiting reply after: how long a customer message can sit unanswered."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Instructions",
+  "t": "",
+  "d": "The written guidance the AI follows when it drafts emails, captures notes, and recommends spaces.",
+  "b": [
+   "Four tabs: Venue, Email, Spaces, and Notes. Each feeds a different part of the AI's output.",
+   "Write instructions once for your venue, and the AI follows them from then on.",
+   "New instruction adds one, and you open it from the list to edit."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Import Records",
+  "t": "",
+  "d": "Lists records held in your source system and lets you choose which to bring into MomentusMAX. Nothing imports on its own.",
+  "b": [
+   "Tabs for Events, Event Opportunities, and Opportunities.",
+   "Filter the list, select the rows you want, then choose Import Selected.",
+   "Complete the mapping screens first, because import matching depends on them."
+  ],
+  "r": "Admins only."
+ },
+ {
+  "n": "Event Type Mapping",
+  "t": "",
+  "d": "Matches event types from your source system to Momentus reporting types.",
+  "b": [
+   "The reporting type is what analytics and goal tracking count.",
+   "The Needs mapping count shows reporting types with nothing assigned yet.",
+   "Sync Event Types pulls the current list from your source system."
+  ],
+  "r": "Visible to everyone."
+ },
+ {
+  "n": "Notes Class Mapping",
+  "t": "Note Class Mapping",
+  "d": "Maps your Enterprise note classes to note categories. The menu item says Notes Class Mapping, and the screen is titled Note Class Mapping.",
+  "b": [
+   "MomentusMAX uses the mapping when AI generates a note and when a note skill creates one.",
+   "Sync Note Classes pulls the current class list from Enterprise.",
+   "Choose No mapping to leave a category unmapped."
+  ],
+  "r": "Visible to everyone. Enterprise only."
+ },
+ {
+  "n": "Email Connector",
+  "t": "",
+  "d": "Connects your organization's Microsoft account so email and meeting invitations attach to the right opportunity automatically.",
+  "b": [
+   "Connect the organization first, then choose which mailboxes sync.",
+   "Domain Exclusions keeps internal mail out of MomentusMAX.",
+   "The connection is read-only. MomentusMAX never sends mail from it."
+  ],
+  "r": "Admins only."
+ },
+ {
+  "n": "Automated Sender Matching",
+  "t": "",
+  "d": "Teaches MomentusMAX to look past no-reply and automated addresses to find the real contact.",
+  "b": [
+   "Each pattern is an address to catch, and * works as a wildcard.",
+   "The platform name is optional and helps you tell entries apart.",
+   "Use it when inquiries from a lead source arrive with the wrong contact."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Profile",
+  "t": "",
+  "d": "Your own account details, not your organization's.",
+  "b": [
+   "Shows your assigned role, with a link to view what that role can do.",
+   "Email Signatures are the signatures available when you write an email."
+  ],
+  "r": "Every user has this screen."
+ },
+ {
+  "n": "Preferences",
+  "t": "",
+  "d": "Your own display, time, and appearance preferences, not your organization's.",
+  "b": [
+   "Choose the language for the interface and the language for AI-drafted email.",
+   "Appearance can be Light, Dark, or System.",
+   "Your time zone changes how times are shown to you."
+  ],
+  "r": "Every user has this screen."
+ },
+ {
+  "n": "Company Background",
+  "t": "",
+  "d": "Shows Company Background usage, including the number of requests used.",
+  "b": [
+   "Two tabs: Usage and Status Lookup.",
+   "Filter the usage by month and year."
+  ],
+  "r": ""
+ },
+ {
+  "n": "Booking Settings",
+  "t": "",
+  "d": "Controls which bookings hold a space in MomentusMAX.",
+  "b": [
+   "Bookings are grouped by status code into Open, Tentative, Definite, Cancelled, Lost, and Archived.",
+   "Cancelled, Lost, and Archived bookings never hold a space.",
+   "Your booking statuses lists every status, and a status set individually overrides its category."
+  ],
+  "r": "Choose carefully: this changes what every rep sees as available."
+ }
+]
