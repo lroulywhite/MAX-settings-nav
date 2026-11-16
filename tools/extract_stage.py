@@ -32,7 +32,7 @@ def j(o): return json.dumps(o, ensure_ascii=False).replace("<", "\\u003c").repla
 
 stage = (head + '<body class="dev-shellAttached ex-mode" app-scheme="momentus"><div id="screen-host"></div>'
   '<template id="tpl-base">' + tpl + '</template>'
-  '<style>html,body{margin:0;width:1920px;overflow:hidden!important}#max-frame{pointer-events:auto!important}</style>'
+  '<style>html,body{margin:0;overflow:hidden!important}#max-frame{pointer-events:auto!important}</style>'
   '<style id="hstyle">html,body{height:1480px!important}#screen-host{height:1480px!important}#max-frame{height:1440px!important}</style>'
   '<script type="application/json" id="data">' + j({"pages": PAGES, "inner": INNER}) + '</script>'
   '<script>(function(){var D=JSON.parse(document.getElementById("data").textContent);window.PAGES=D.pages;'

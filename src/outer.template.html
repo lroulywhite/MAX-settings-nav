@@ -5,15 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MAX Explore Settings</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme:light;
     --navy:#211e60; --accent:#4146e0; --accent-d:#3338c4; --bg:#f4f5fb; --surface:#fff; --line:#dcdfee;
-    --ink:#211e60; --ink-2:#4a4a68; --ink-3:#6b6b8a; --soft:#eceefa; --soft-line:#cfd3ea; --stage:#e4e6f2;
-    --good:#2fbf71; --good-ink:#1d5a31; --shadow:0 10px 30px rgba(33,30,96,.18);
+    --ink:#211e60; --ink-2:#34345a; --ink-3:#5b5b7d; --soft:#eceefa; --soft-line:#c4c9e6; --stage:#dfe2f1;
+    --orange:#fe5545; --orange-bg:#ffedea; --orange-ink:#a8271a;
+    --good:#2fbf71; --good-d:#1d8a50; --good-ink:#124b2a; --shadow:0 12px 34px rgba(33,30,96,.22);
     box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
   }
+  html{font-size:16px}
+  @media (min-width:1150px){html{font-size:17px}}
+  @media (min-width:1550px){html{font-size:18px}}
+  @media (min-width:1800px){html{font-size:20px}}
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink)}
@@ -21,79 +26,121 @@
   :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
   .app{height:100%;height:100dvh;display:flex;flex-direction:column}
 
-  /* header with the progress count */
-  .top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 24px;background:var(--surface);border-bottom:1px solid var(--line)}
-  .brand{display:flex;align-items:baseline;gap:10px;min-width:0}
-  .brand b{font-size:16px;font-weight:700;color:var(--navy);white-space:nowrap}
-  .brand span{font-size:13px;color:var(--ink-3);white-space:nowrap}
-  .prog{display:flex;align-items:center;gap:12px;flex:none}
-  .prog-text{font-size:13px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+  /* header: title and progress */
+  .top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:.55rem 1.1rem;background:var(--surface);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline;gap:.6rem;min-width:0}
+  .brand b{font-size:1.05rem;font-weight:800;color:var(--navy);white-space:nowrap}
+  .brand span{font-size:.8rem;color:var(--ink-3);white-space:nowrap}
+  .prog{display:flex;align-items:center;gap:.8rem;flex:none}
+  .prog-text{font-size:.9rem;font-weight:700;color:var(--ink-2);white-space:nowrap}
   .prog-text.all{color:var(--good-ink)}
-  .bar{width:180px;height:8px;border-radius:8px;background:var(--soft);overflow:hidden}
-  .bar i{display:block;height:100%;width:0;background:var(--good);border-radius:8px;transition:width .35s ease}
+  .bar{width:9rem;height:.6rem;border-radius:.6rem;background:var(--soft);overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--good);border-radius:.6rem;transition:width .35s ease}
 
-  .main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 390px}
-  .stage{min-height:0;background:var(--stage);overflow:auto;padding:16px}
-  .shot{position:relative;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 6px 20px rgba(33,30,96,.10)}
+  .main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) clamp(340px,24vw,450px)}
+  .stagecol{position:relative;min-height:0;min-width:0;background:var(--stage)}
+  .stage{height:100%;overflow:auto;padding:14px}
+  .shot{position:relative;margin:0 auto;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 8px 26px rgba(33,30,96,.14)}
   .page{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;background:#fff}
-  .page iframe{position:absolute;left:-50px;top:0;width:1920px;border:0;display:block;background:#fff}
+  .page iframe{position:absolute;left:-50px;top:0;border:0;display:block;background:#fff}
+
+  /* pointer that shows exactly what to click */
+  .coach{position:absolute;display:none;align-items:center;z-index:5;pointer-events:none;transform:translateY(-50%)}
+  .coach .tip{width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-right:16px solid var(--orange)}
+  .coach .pill{background:var(--orange-bg);color:var(--navy);border:3px solid var(--orange);font-weight:700;font-size:1.05rem;padding:.5rem 1.1rem;border-radius:999px;box-shadow:0 8px 22px rgba(254,85,69,.35);white-space:nowrap;animation:nudge 1.2s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+
+  /* callouts attached to the page title, with a line that points at it */
+  .pc{position:absolute;display:none;z-index:5;pointer-events:none;flex-direction:column;gap:.7rem}
+  .pc .co{margin:0;box-shadow:0 14px 34px rgba(33,30,96,.35);animation:rise .3s ease-out}
+  .pc .co p{font-size:1.05rem}
+  .pc .x{pointer-events:auto;align-self:flex-end;border:0;background:var(--navy);color:#fff;font-size:.85rem;font-weight:700;border-radius:999px;padding:.3rem .8rem;box-shadow:0 6px 16px rgba(33,30,96,.35);margin-bottom:-.2rem}
+  .pc .x:hover{background:var(--accent-d)}
+  .leader{position:absolute;display:none;z-index:4;pointer-events:none;height:0;border-top:4px dashed var(--accent);transform:translateY(-2px)}
+  .leader::before{content:"";position:absolute;left:-4px;top:-12px;border-top:10px solid transparent;border-bottom:10px solid transparent;border-right:16px solid var(--accent)}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .toast{position:absolute;left:50%;bottom:22px;transform:translate(-50%,12px);max-width:calc(100% - 40px);background:var(--orange-bg);color:var(--navy);border-left:8px solid var(--orange);font-size:1.1rem;font-weight:700;line-height:1.35;padding:.85rem 1.3rem;border-radius:12px;box-shadow:0 12px 30px rgba(254,85,69,.35);opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:6;text-align:center}
+  .toast.on{opacity:1;transform:translate(-50%,0)}
 
   /* guide */
-  .guide{position:relative;min-height:0;display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--line)}
-  .guide-body{flex:1;min-height:0;overflow:auto;padding:24px 26px 12px}
-  h1{font-size:26px;line-height:1.2;font-weight:700;color:var(--ink);margin-bottom:10px}
-  h2.k{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-  .lede{font-size:15px;line-height:1.6;font-weight:500;color:var(--ink-2);margin-bottom:16px}
-  .sub{font-size:13px;color:var(--ink-3);margin:-4px 0 12px}
-  .meta{font-size:13px;color:var(--ink-3);margin:-6px 0 18px}
-  .done{display:flex;align-items:center;gap:10px;background:#e8f4ea;color:var(--good-ink);border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;margin-bottom:16px}
-  .tick{flex:none;width:18px;height:18px;border-radius:50%;background:var(--good) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/11px 11px no-repeat}
-  .crumb{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-  .crumb .pos{font-size:12px;color:var(--ink-3);white-space:nowrap}
-  .who{display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
-  .who svg{flex:none;margin-top:2px}
-  .who b{display:block;font-size:12px;font-weight:700;color:var(--ink-3);margin-bottom:2px}
-  .who span{font-size:14px;line-height:1.5;color:var(--ink-2)}
-  details.kp{border:1px solid var(--line);border-radius:12px;margin-bottom:18px;background:var(--surface)}
-  details.kp summary{cursor:pointer;list-style:none;padding:11px 14px;font-size:14px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between;align-items:center}
-  details.kp summary::-webkit-details-marker{display:none}
-  details.kp summary::after{content:"+";font-size:18px;color:var(--ink-3);line-height:1}
-  details.kp[open] summary::after{content:"\2212"}
-  details.kp ul{padding:0 14px 12px 32px;font-size:14px;line-height:1.55;color:var(--ink-2)}
-  details.kp li{margin-bottom:6px}
-  .grp{margin-bottom:18px}
-  .grp .gb{font-size:13px;color:var(--ink-3);margin:2px 0 8px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{border:1px solid var(--soft-line);background:var(--surface);color:var(--ink-2);padding:8px 14px;border-radius:20px;font-size:13px;font-weight:500;transition:background .15s,border-color .15s}
-  .chip:hover{background:var(--soft)}
-  .chip.cur{background:var(--accent);border-color:var(--accent);color:#fff}
-  .chip.seen::before{content:"";display:inline-block;width:15px;height:15px;margin-right:7px;border-radius:50%;vertical-align:-3px;background:var(--good) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/9px 9px no-repeat}
+  .guide{min-height:0;display:flex;flex-direction:column;background:var(--surface);border-left:1px solid var(--line)}
+  .guide-body{flex:1;min-height:0;overflow:auto;padding:1.1rem 1.2rem .8rem}
+  h1{font-size:1.75rem;line-height:1.15;font-weight:800;color:var(--ink);margin:.2rem 0 .8rem}
+  h2.k{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+  .crumb{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .crumb .pos{font-size:.8rem;font-weight:600;color:var(--ink-3);white-space:nowrap}
+  .sub{font-size:.85rem;color:var(--ink-3);margin:-.4rem 0 .8rem}
 
-  .nav{flex:none;display:flex;align-items:center;gap:10px;padding:14px 22px;border-top:1px solid var(--line);background:var(--surface)}
-  .btn{white-space:nowrap;background:transparent;border:1px solid var(--soft-line);color:var(--ink-2);padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;transition:background .15s}
+  /* the next action banner */
+  .banner{display:flex;gap:.9rem;align-items:center;background:var(--orange-bg);color:var(--navy);border:3px solid var(--orange);border-radius:16px;padding:.95rem 1.05rem;margin-bottom:1.1rem;box-shadow:0 10px 24px rgba(254,85,69,.25)}
+  .banner .ic{flex:none;width:2.6rem;height:2.6rem;border-radius:50%;background:#fff;border:2px solid var(--orange);display:grid;place-items:center}
+  .banner small{display:block;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-ink);margin-bottom:.15rem}
+  .banner .t{font-size:1.3rem;line-height:1.3;font-weight:800;color:var(--navy)}
+  .banner .t em{font-style:normal;background:var(--orange);color:#fff;border-radius:8px;padding:.02rem .45rem}
+  .banner .s{font-size:.9rem;font-weight:500;margin-top:.3rem;color:var(--ink-2)}
+  .banner.done{background:var(--good-d);border-color:var(--good-d);color:#fff;box-shadow:0 10px 24px rgba(29,138,80,.35)}
+  .banner.done .ic{background:rgba(255,255,255,.2);border-color:transparent}
+  .banner.done small{color:#d6f5e2}.banner.done .t,.banner.done .s{color:#fff}
+
+  /* callouts */
+  .co{border-radius:14px;padding:1rem 1.1rem;margin-bottom:1rem}
+  .co .lab{display:flex;align-items:center;gap:.5rem;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem}
+  .co p{font-size:1.1rem;line-height:1.5;font-weight:600}
+  .co.what{background:#e9ebff;border-left:8px solid var(--accent);color:var(--ink)}
+  .co.what .lab{color:var(--accent-d)}
+  .co.who{background:var(--navy);color:#fff}
+  .co.who .lab{color:#b9bdff}
+  .co.who p{font-weight:600}
+  .steps{list-style:none;counter-reset:s;margin:0 0 1.1rem}
+  .steps li{counter-increment:s;display:flex;gap:.8rem;align-items:flex-start;font-size:1.15rem;line-height:1.4;font-weight:600;color:var(--ink);margin-bottom:.8rem}
+  .steps li::before{content:counter(s);flex:none;width:2rem;height:2rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;display:grid;place-items:center;font-size:1rem}
+  .steps b{color:var(--accent-d)}
+
+  details.kp{border:2px solid var(--line);border-radius:14px;margin-bottom:1rem;background:var(--surface)}
+  details.kp summary{cursor:pointer;list-style:none;padding:.8rem 1rem;font-size:1.05rem;font-weight:700;color:var(--ink);display:flex;justify-content:space-between;align-items:center}
+  details.kp summary::-webkit-details-marker{display:none}
+  details.kp summary::after{content:"+";font-size:1.5rem;color:var(--accent);line-height:1}
+  details.kp[open] summary::after{content:"\2212"}
+  details.kp ul{padding:0 1rem .9rem 2.2rem;font-size:1rem;line-height:1.5;color:var(--ink-2)}
+  details.kp li{margin-bottom:.45rem}
+  .grp{margin-bottom:1.1rem}
+  .grp .gb{font-size:.9rem;color:var(--ink-3);margin:.15rem 0 .5rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem}
+  .chip{border:2px solid var(--soft-line);background:var(--surface);color:var(--ink-2);padding:.5rem .9rem;border-radius:999px;font-size:.95rem;font-weight:600;transition:background .15s,border-color .15s}
+  .chip:hover{background:var(--soft);border-color:var(--accent)}
+  .chip.cur{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip.seen::before{content:"";display:inline-block;width:1rem;height:1rem;margin-right:.45rem;border-radius:50%;vertical-align:-.15rem;background:var(--good) url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/62% no-repeat}
+
+  .nav{flex:none;display:flex;align-items:center;gap:.4rem;padding:.8rem 1rem;border-top:1px solid var(--line);background:var(--surface)}
+  .btn{white-space:nowrap;background:transparent;border:2px solid var(--soft-line);color:var(--ink-2);padding:.55rem .85rem;border-radius:12px;font-size:.95rem;font-weight:700;transition:background .15s}
   .btn:hover:not(:disabled){background:var(--soft)}
   .btn:disabled{opacity:.35;cursor:default}
-  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;padding:.6rem 1.1rem;font-size:1.05rem}
   .btn.primary:hover:not(:disabled){background:var(--accent-d)}
+  .btn.link{border-color:transparent;color:var(--accent)}
   .nav .grow{flex:1}
-  .nav .btn.link{border-color:transparent;color:var(--accent)}
-  .toast{position:absolute;left:20px;right:20px;bottom:78px;background:var(--navy);color:#fff;font-size:14px;line-height:1.4;padding:11px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s;pointer-events:none}
-  .toast.on{opacity:1;transform:none}
 
-  @media (max-width:1200px){.main{grid-template-columns:minmax(0,1fr) 350px}.guide-body{padding:20px 20px 10px}h1{font-size:23px}.nav{padding:12px 14px;gap:6px}.btn{padding:9px 12px;font-size:13px}}
-  @media (max-width:900px){
-    .main{grid-template-columns:1fr;grid-template-rows:minmax(0,42%) minmax(0,58%)}
+  @media (max-width:1100px){
+    .main{grid-template-columns:1fr;grid-template-rows:minmax(0,50%) minmax(0,50%)}
     .guide{border-left:0;border-top:1px solid var(--line)}
-    .stage{padding:10px}.top{padding:8px 16px}.bar{width:90px}.brand span{display:none}
-    .guide-body{padding:16px 18px 8px}.nav{padding:10px 16px}
+    .stage{padding:8px}.bar{width:5rem}.brand span{display:none}
+    .banner .t{font-size:1.15rem}
   }
   @media (max-width:900px) and (orientation:landscape) and (max-height:560px){
-    .main{grid-template-columns:minmax(0,1fr) 320px;grid-template-rows:none}
+    .main{grid-template-columns:minmax(0,1fr) 330px;grid-template-rows:none}
     .guide{border-left:1px solid var(--line);border-top:0}
-    h1{font-size:20px}
+    h1{font-size:1.4rem}
   }
-  @media (max-width:480px){.btn{padding:10px 12px;font-size:13px}.prog-text{font-size:12px}}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media (max-width:1549px){
+    .nav{padding:.75rem .8rem;gap:.3rem}
+    .btn{padding:.5rem .55rem;font-size:.92rem}.btn.primary{padding:.55rem .85rem;font-size:.98rem}
+  }
+  @media (max-width:640px){
+    .bar{display:none}.prog-text{font-size:.8rem}.brand b{font-size:.95rem}
+    .coach .pill{font-size:.8rem;padding:.3rem .65rem}.coach .tip{border-top-width:9px;border-bottom-width:9px;border-right-width:11px}
+    .btn{padding:.6rem .8rem;font-size:.9rem}.btn.primary{font-size:1rem}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}.coach .pill,.pc .co{animation:none}}
 </style>
 </head>
 <body>
@@ -103,12 +150,19 @@
     <div class="prog" role="status" aria-live="polite"><span class="prog-text" id="ptext"></span><div class="bar" aria-hidden="true"><i id="pfill"></i></div></div>
   </header>
   <div class="main">
-    <div class="stage" id="stage">
-      <div class="shot" id="shot"><div class="page" id="page"><iframe id="sf" title="The MAX Settings page. Select a page in the list on the left to open it."></iframe></div></div>
+    <div class="stagecol">
+      <div class="stage" id="stage">
+        <div class="shot" id="shot">
+          <div class="page" id="page"><iframe id="sf" title="The MAX Settings page. Click a page in the list on the left to open it."></iframe></div>
+          <div class="leader" id="leader" aria-hidden="true"></div>
+          <div class="pc" id="pc" role="region" aria-label="About this page"></div>
+          <div class="coach" id="coach" aria-hidden="true"><span class="tip"></span><span class="pill" id="pill">Click here</span></div>
+        </div>
+      </div>
+      <div class="toast" id="toast" role="status"></div>
     </div>
     <section class="guide" aria-live="polite">
       <div class="guide-body" id="guide"></div>
-      <div class="toast" id="toast" role="status"></div>
       <div class="nav" id="nav"></div>
     </section>
   </div>
@@ -117,7 +171,7 @@
 const EX = __EX_JSON__;
 const STAGE = __STAGE_JSON__;
 const N = EX.length;
-const W = 1870;                      // width of the product area, in layout pixels (the 50 px side rail is cropped)
+let W = 1300;                        // width of the product area in layout pixels (the 50 px side rail is cropped); chosen in fit()
 const GROUPS = [
   {name:'General', blurb:'Venue-wide setup, people, calendar, and usage.', pages:[0,1,2,3]},
   {name:'Revenue Goals', blurb:'The targets MAX measures your pipeline against.', pages:[4,5]},
@@ -132,36 +186,95 @@ const GROUP_OF = {}; GROUPS.forEach((g,gi)=>g.pages.forEach(p=>GROUP_OF[p]=gi));
 
 const stage = document.getElementById('stage'), shot = document.getElementById('shot'), page = document.getElementById('page'),
       sf = document.getElementById('sf'), guide = document.getElementById('guide'), nav = document.getElementById('nav'),
-      toast = document.getElementById('toast'), ptext = document.getElementById('ptext'), pfill = document.getElementById('pfill');
+      toast = document.getElementById('toast'), ptext = document.getElementById('ptext'), pfill = document.getElementById('pfill'),
+      coach = document.getElementById('coach'), pill = document.getElementById('pill'), pc = document.getElementById('pc'), leader = document.getElementById('leader');
 
-let cur = -1;                         // -1 = the index of all pages, otherwise the page being shown
-const viewed = {0:1};                 // General is open when you arrive
+let cur = -1;                         // -1 = the start screen, otherwise the page being shown
+let viewed = {0:1};                   // General is open when you arrive
+let SCALE = 1, hideCallouts = false;
 const vcount = () => Object.keys(viewed).length;
 const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* what to click next: the first page you have not viewed, after the current one */
+function targetIndex(){
+  if(vcount()>=N) return -1;
+  for(let k=1;k<=N;k++){ const i=((cur<0?0:cur)+k)%N; if(!viewed[i]) return i; }
+  return -1;
+}
 
 /* ---------- the live product page ---------- */
 let pdoc = null, toastTimer = null;
 const navBtns = () => pdoc ? [...pdoc.querySelectorAll('.settings-nav__sub-item')] : [];
-function markSeen(){ navBtns().forEach((b,i)=>b.classList.toggle('wt-seen', !!viewed[i])); }
+function decorate(){
+  const t = targetIndex();
+  navBtns().forEach((b,i)=>{ b.classList.toggle('wt-seen', !!viewed[i]); b.classList.toggle('wt-target', i===t); });
+  if(t>=0) revealInList(t);
+  placeAll();
+}
+function revealInList(i){
+  const side = pdoc.querySelector('.settings-shell__sidebar'), b = navBtns()[i];
+  if(side && b){ const sr=side.getBoundingClientRect(), r=b.getBoundingClientRect();
+    if(r.top<sr.top+8) side.scrollTop-=(sr.top+8-r.top); else if(r.bottom>sr.bottom-8) side.scrollTop+=(r.bottom-sr.bottom+12); }
+}
 function swapPage(i){
   if(!pdoc) return;
   const old = pdoc.querySelector('section.settings-shell__content'); if(!old) return;
   const tmp = pdoc.createElement('div'); tmp.innerHTML = sf.contentWindow.PAGES[i]; old.replaceWith(tmp.firstElementChild);
   navBtns().forEach((b,j)=>{
     const on = j===i; b.classList.toggle('settings-nav__sub-item--active', on);
-    if(on){ b.setAttribute('aria-current','page'); b.classList.remove('wt-pulse'); void b.offsetWidth; b.classList.add('wt-pulse'); } else b.removeAttribute('aria-current');
+    if(on){ b.setAttribute('aria-current','page'); } else b.removeAttribute('aria-current');
   });
-  const side = pdoc.querySelector('.settings-shell__sidebar'), b = navBtns()[i];     // keep the chosen item in view
-  if(side && b){ const sr=side.getBoundingClientRect(), r=b.getBoundingClientRect(); if(r.top<sr.top+4) side.scrollTop-=(sr.top+4-r.top); else if(r.bottom>sr.bottom-4) side.scrollTop+=(r.bottom-sr.bottom+8); }
+  revealInList(i);
 }
-function say(t){ toast.textContent=t; toast.classList.add('on'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('on'),2400); }
+function placeCoach(){
+  const t = targetIndex(), b = navBtns()[t];
+  if(!pdoc || t<0 || !b){ coach.style.display='none'; return; }
+  const side = pdoc.querySelector('.settings-shell__sidebar'), r = b.getBoundingClientRect();
+  let y = r.top + r.height/2, label = (cur<0 ? 'Start here: click ' : 'Next: click ') + '<b>' + esc(EX[t].n) + '</b>';
+  if(side){ const sr = side.getBoundingClientRect();
+    if(r.bottom < sr.top+4){ y = sr.top + 22; label = '&uarr; Scroll up to <b>' + esc(EX[t].n) + '</b>'; }
+    else if(r.top > sr.bottom-4){ y = sr.bottom - 22; label = '&darr; Scroll down to <b>' + esc(EX[t].n) + '</b>'; } }
+  pill.innerHTML = label;
+  coach.style.left = ((side ? side.getBoundingClientRect().right : r.right)*SCALE + 6)+'px';
+  coach.style.top = ((y + 40)*SCALE)+'px';
+  coach.style.display = 'flex';
+}
+/* the callouts sit on the page itself, next to the title they describe */
+const anchored = () => shot.clientWidth >= 760 && shot.clientHeight >= 560;      // on small screens the notes go in the guide instead
+let lastAnch = null;
+function placePageCallouts(){
+  const hide = () => { pc.style.display='none'; leader.style.display='none'; };
+  if(cur<0 || hideCallouts || !pdoc || !anchored()){ hide(); return; }
+  const sec = pdoc.querySelector('section.settings-shell__content'), h = sec && sec.querySelector('h2,h1');
+  if(!h){ hide(); return; }
+  const rg = pdoc.createRange(); rg.selectNodeContents(h);
+  const tr = rg.getBoundingClientRect(), cr = sec.getBoundingClientRect();
+  if(tr.bottom < cr.top || tr.top > cr.bottom){ hide(); return; }          // the title was scrolled out of view
+  const s = SCALE, titleRight = tr.right*s, titleTop = (tr.top+40)*s, titleMid = (tr.top+tr.height/2+40)*s;
+  const contentRight = cr.right*s, cw = Math.min(460, Math.max(300, cr.width*s*0.5));
+  const left = Math.max(titleRight + 90, contentRight - cw - 16);
+  pc.style.display='flex'; pc.style.left = left+'px'; pc.style.top = Math.max(6, titleTop-8)+'px'; pc.style.width = cw+'px';
+  if(left-titleRight > 40){ leader.style.display='block'; leader.style.left=(titleRight+10)+'px'; leader.style.top=titleMid+'px'; leader.style.width=(left-titleRight-10)+'px'; }
+  else leader.style.display='none';
+}
+function placeAll(){ placeCoach(); placePageCallouts(); }
+function calloutHTML(){
+  if(cur<0) return '';
+  const e = EX[cur];
+  return `<button class="x" id="x-hide">Hide these notes</button>`
+    + `<div class="co what"><div class="lab">${I.info} What this page does</div><p>${esc(e.d)}</p></div>`
+    + (e.r ? `<div class="co who"><div class="lab">${I.shield} Who can see it</div><p>${esc(e.r)}</p></div>` : '');
+}
+function say(t){ toast.innerHTML=t; toast.classList.add('on'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toast.classList.remove('on'),3200); }
+function nudgeMsg(){ const t=targetIndex(); say(t>=0 ? `Click <u>${esc(EX[t].n)}</u> in the list on the left.` : 'Click any page in the list on the left.'); }
 function selectPage(i){
   if(i<0||i>=N) return;
-  cur=i; viewed[i]=1; swapPage(i); markSeen(); render();
-  stage.scrollTo({left:0});
+  cur=i; viewed[i]=1; hideCallouts=false; swapPage(i); render(); decorate(); requestAnimationFrame(placeAll);
 }
-function toIndex(){ cur=-1; render(); }
-function step(d){ const n=cur+d; if(n>=0&&n<N) selectPage(n); }
+function toStart(){ cur=-1; render(); decorate(); }
+function goNext(){ const t=targetIndex(); if(t>=0) selectPage(t); else if(cur<N-1) selectPage(cur+1); }
+function goPrev(){ if(cur>0) selectPage(cur-1); }
+function restart(){ viewed={}; cur=-1; swapPage(0); viewed={0:1}; render(); decorate(); }
 
 function onReady(){
   try{ pdoc = sf.contentDocument.getElementById('max-frame').contentDocument; }catch(e){ return; }
@@ -169,75 +282,102 @@ function onReady(){
   const st = pdoc.createElement('style');
   st.textContent = ".settings-nav__sub-item{position:relative;padding-right:34px!important}"
    + ".settings-nav__sub-item.wt-seen::after{content:'';position:absolute;right:9px;top:50%;width:17px;height:17px;margin-top:-8.5px;border-radius:50%;background:#2fbf71 "+CHK+" center/10px 10px no-repeat}"
-   + "@keyframes wtp{0%{box-shadow:0 0 0 0 rgba(65,70,224,.55)}100%{box-shadow:0 0 0 10px rgba(65,70,224,0)}}"
-   + ".settings-nav__sub-item.wt-pulse{animation:wtp .9s ease-out}@media (prefers-reduced-motion:reduce){.settings-nav__sub-item.wt-pulse{animation:none}}";
+   + "@keyframes wtt{0%,100%{box-shadow:0 0 0 0 rgba(65,70,224,.55)}50%{box-shadow:0 0 0 8px rgba(65,70,224,0)}}"
+   + ".settings-nav__sub-item.wt-target{outline:3px solid #4146e0;outline-offset:1px;border-radius:6px;animation:wtt 1.2s ease-in-out infinite}"
+   + "@media (prefers-reduced-motion:reduce){.settings-nav__sub-item.wt-target{animation:none}}";
   pdoc.head.appendChild(st);
   pdoc.addEventListener('click', e=>{
     e.preventDefault(); e.stopPropagation();
     const b = e.target.closest && e.target.closest('.settings-nav__sub-item');
-    if(b) selectPage(navBtns().indexOf(b)); else say('Select a page in the Settings list on the left.');
+    if(b) selectPage(navBtns().indexOf(b)); else nudgeMsg();
   }, true);
   ['auxclick','contextmenu','submit','dblclick'].forEach(t=>pdoc.addEventListener(t,e=>e.preventDefault(),true));
   pdoc.addEventListener('mousedown', e=>{ if(!(e.target.closest && e.target.closest('.settings-nav__sub-item'))) e.preventDefault(); }, true);
   pdoc.addEventListener('keydown', e=>{ const t=e.target; if(t && (t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.tagName==='SELECT')) e.preventDefault(); onKey(e); }, true);
-  sf.contentDocument.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); say('Select a page in the Settings list on the left.'); }, true);
-  markSeen(); swapPage(0); fit();
+  pdoc.addEventListener('scroll', ()=>placeAll(), true);
+  sf.contentDocument.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); nudgeMsg(); }, true);
+  swapPage(0); fit(); decorate(); requestAnimationFrame(placeAll);
 }
 window.addEventListener('message', e=>{ if(e.data && e.data.maxReady) onReady(); });
 
-/* ---------- layout: the product fills the whole left side ---------- */
+/* ---------- layout: the product fills the whole left side, as large as it can be ---------- */
 function fit(){
   const cs = getComputedStyle(stage);
   const iw = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
   const ih = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
   if(iw<=0||ih<=0) return;
-  let s = Math.min(1, iw/W);
-  if(iw < 700) s = Math.max(s, 0.45);                  // small screens: stay readable and scroll sideways
+  W = Math.max(960, Math.min(1300, Math.round(iw/1.5)));  // lay the product out narrower, like a smaller window, so it can be shown much larger
+  let s = Math.min(1.9, iw/W);
+  if(iw < 560) s = Math.max(s, 0.5);                   // small screens: stay readable and scroll sideways
+  SCALE = s;
   const h = Math.round(ih/s);
   shot.style.width = Math.round(W*s)+'px'; shot.style.height = ih+'px';
   page.style.width = W+'px'; page.style.height = h+'px'; page.style.transform = 'scale('+s+')';
-  sf.style.height = h+'px';
+  sf.style.width = (W+50)+'px'; sf.style.height = h+'px';
   try{ const hs = sf.contentDocument.getElementById('hstyle');
-    if(hs) hs.textContent = 'html,body{height:'+h+'px!important}#screen-host{height:'+h+'px!important}#max-frame{height:'+(h-40)+'px!important}'; }catch(e){}
+    if(hs) hs.textContent = 'html,body{height:'+h+'px!important}#screen-host{width:'+(W+50)+'px!important;height:'+h+'px!important}#max-frame{height:'+(h-40)+'px!important;width:'+W+'px!important}'; }catch(e){}
+  const a = anchored(); if(a !== lastAnch){ lastAnch = a; if(typeof render==='function' && guide.innerHTML) render(); }
+  placeAll();
 }
 
 /* ---------- the guide ---------- */
-const ICON_WHO = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b6b8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.9-8 9-4.8-1.1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>';
+const I = {
+  click:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fe5545" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 9l9.5 3.4-4 1.7-1.7 4z"/><path d="M9 3.4v2.2M4.4 5.3l1.5 1.5M3 10h2.2M13.6 5.3l-1.5 1.5M5.3 14.4l1.5-1.5"/></svg>',
+  check:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+  info:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  shield:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 7.9-8 9-4.8-1.1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>'
+};
 const chip = p => `<button class="chip${viewed[p]?' seen':''}${p===cur?' cur':''}" data-p="${p}"${p===cur?' aria-current="true"':''}>${esc(EX[p].n)}</button>`;
+function banner(){
+  const t = targetIndex();
+  if(t<0) return `<div class="banner done"><span class="ic">${I.check}</span><div><small>Finished</small><div class="t">You have viewed every Settings page.</div><div class="s">Click <b>Restart</b> below to explore again.</div></div></div>`;
+  const lead = cur<0 ? 'Start here' : 'Do this next';
+  const sub = cur<0 ? 'Or click the <b>Start</b> button below.' : 'Or click the <b>Next page</b> button below.';
+  return `<div class="banner"><span class="ic">${I.click}</span><div><small>${lead}</small><div class="t">Click <em>${esc(EX[t].n)}</em> in the list on the left.</div><div class="s">${sub}</div></div></div>`;
+}
 function render(){
-  const all = vcount()===N;
+  const all = vcount()>=N, t = targetIndex();
   ptext.textContent = all ? `All ${N} pages viewed` : `${vcount()} of ${N} pages viewed`;
   ptext.classList.toggle('all', all);
   pfill.style.width = (vcount()/N*100)+'%';
-  let h = '', n = '';
-  if(all) h += `<div class="done"><span class="tick"></span>You have viewed every Settings page.</div>`;
+  let h = banner(), n = '';
   if(cur<0){
-    h += `<h1>Explore Settings</h1><p class="lede">See what each Settings page does in MAX. Select a page in the list on the left, or choose one below.</p>
-          <p class="meta">${N} pages in ${GROUPS.length} groups. Some pages are for admins only.</p>`;
+    h += `<h1>Explore Settings</h1>
+      <ol class="steps"><li><span>Click a page in the Settings list on the left.</span></li><li><span>Read <b>what the page does</b> and <b>who can see it</b>.</span></li><li><span>Click <b>Next page</b> to keep going.</span></li></ol>`;
     GROUPS.forEach(g=>{ h += `<section class="grp"><h2 class="k">${esc(g.name)}</h2><p class="gb">${esc(g.blurb)}</p><div class="chips">${g.pages.map(chip).join('')}</div></section>`; });
-    n = `<span class="grow"></span><button class="btn primary" id="go-start">${vcount()>1?'Continue the tour':'Start the tour'}</button>`;
+    n = `<span class="grow"></span>` + (all ? `<button class="btn primary" id="go-restart">Restart</button>` : `<button class="btn primary" id="go-next">${vcount()>1?'Continue':'Start'}</button>`);
   } else {
     const e = EX[cur], g = GROUPS[GROUP_OF[cur]];
     h += `<div class="crumb"><h2 class="k">${esc(g.name)}</h2><span class="pos">Page ${cur+1} of ${N}</span></div><h1>${esc(e.n)}</h1>`;
     if(e.t && e.t!==e.n) h += `<p class="sub">Screen title: ${esc(e.t)}</p>`;
-    h += `<p class="lede">${esc(e.d)}</p>`;
-    if(e.r) h += `<div class="who">${ICON_WHO}<div><b>Who can see it</b><span>${esc(e.r)}</span></div></div>`;
+    if(!anchored()){
+      h += `<div class="co what"><div class="lab">${I.info} What this page does</div><p>${esc(e.d)}</p></div>`;
+      if(e.r) h += `<div class="co who"><div class="lab">${I.shield} Who can see it</div><p>${esc(e.r)}</p></div>`;
+    } else if(hideCallouts){
+      h += `<button class="btn link" id="x-show" style="padding-left:0">Show the notes on the page</button>`;
+    } else {
+      h += `<p class="sub" style="font-size:.95rem">The notes for this page are on the page itself, next to its title.</p>`;
+    }
     if(e.b && e.b.length) h += `<details class="kp"><summary>Key points</summary><ul>${e.b.map(b=>`<li>${esc(b)}</li>`).join('')}</ul></details>`;
-    if(g.pages.length>1) h += `<h2 class="k" style="margin-bottom:8px">More in ${esc(g.name)}</h2><div class="chips">${g.pages.map(chip).join('')}</div>`;
-    n = `<button class="btn" id="go-prev"${cur===0?' disabled':''}>Previous</button><button class="btn link" id="go-all">All pages</button><span class="grow"></span><button class="btn primary" id="go-next"${cur===N-1?' disabled':''}>Next page</button>`;
+    if(g.pages.length>1) h += `<h2 class="k" style="margin-bottom:.5rem">More in ${esc(g.name)}</h2><div class="chips">${g.pages.map(chip).join('')}</div>`;
+    n = `<button class="btn" id="go-prev"${cur===0?' disabled':''}>Previous</button><button class="btn link" id="go-all">All pages</button><span class="grow"></span>` +
+        (all ? `<button class="btn primary" id="go-restart">Restart</button>` : `<button class="btn primary" id="go-next">Next page</button>`);
   }
   guide.innerHTML = h; guide.scrollTop = 0; nav.innerHTML = n;
+  pc.innerHTML = calloutHTML();
+  const xh = document.getElementById('x-hide'); if(xh) xh.onclick = ()=>{ hideCallouts=true; render(); placeAll(); };
+  const xs = document.getElementById('x-show'); if(xs) xs.onclick = ()=>{ hideCallouts=false; render(); placeAll(); };
   guide.querySelectorAll('.chip').forEach(c=>c.onclick=()=>selectPage(+c.dataset.p));
   const q = id => document.getElementById(id);
-  if(q('go-start')) q('go-start').onclick = ()=>selectPage(vcount()>1 ? Math.min(...Array.from({length:N},(_,i)=>i).filter(i=>!viewed[i]).concat([0])) : 0);
-  if(q('go-prev')) q('go-prev').onclick = ()=>step(-1);
-  if(q('go-next')) q('go-next').onclick = ()=>step(1);
-  if(q('go-all')) q('go-all').onclick = toIndex;
+  if(q('go-prev')) q('go-prev').onclick = goPrev;
+  if(q('go-next')) q('go-next').onclick = goNext;
+  if(q('go-all')) q('go-all').onclick = toStart;
+  if(q('go-restart')) q('go-restart').onclick = restart;
 }
 function onKey(e){
   if(e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName||'')) return;
-  if(e.key==='ArrowRight' || e.key==='ArrowDown'){ if(cur<0) selectPage(0); else step(1); e.preventDefault(); }
-  else if(e.key==='ArrowLeft' || e.key==='ArrowUp'){ if(cur>0) step(-1); e.preventDefault(); }
+  if(e.key==='ArrowRight' || e.key==='ArrowDown'){ goNext(); e.preventDefault(); }
+  else if(e.key==='ArrowLeft' || e.key==='ArrowUp'){ goPrev(); e.preventDefault(); }
 }
 document.addEventListener('keydown', onKey);
 new ResizeObserver(()=>fit()).observe(stage);
